@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useForm, SubmitHandler } from "react-hook-form";
+
+import "./App.css";
+
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="email"
+          id="email"
+          {...register("email", {
+            required: "メールアドレスを入力してください。",
+          })}
+        />
+        <input
+          type="password"
+          id="password"
+          {...register("password", {
+            required: "パスワードを入力してください。",
+          })}
+        />
+        {errors.email?.message && (
+          <p className="errorMessage">{errors.email?.message}</p>
+        )}
+        {errors.password?.message && (
+          <p className="errorMessage">{errors.password?.message}</p>
+        )}
+        <button type="submit">ログイン</button>
+      </form>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
