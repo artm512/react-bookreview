@@ -21,23 +21,29 @@ function App() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="email"
-          id="email"
-          {...register("email", {
-            required: "メールアドレスを入力してください。",
-          })}
-        />
-        <input
-          type="password"
-          id="password"
-          {...register("password", {
-            required: "パスワードを入力してください。",
-          })}
-        />
+        <label>
+          メールアドレス
+          <input
+            type="email"
+            id="email"
+            {...register("email", {
+              required: "メールアドレスを入力してください。",
+            })}
+          />
+        </label>
         {errors.email?.message && (
           <p className="errorMessage">{errors.email?.message}</p>
         )}
+        <label>
+          パスワード
+          <input
+            type="password"
+            id="password"
+            {...register("password", {
+              required: "パスワードを入力してください。",
+            })}
+          />
+        </label>
         {errors.password?.message && (
           <p className="errorMessage">{errors.password?.message}</p>
         )}

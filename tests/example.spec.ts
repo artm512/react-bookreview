@@ -1,18 +1,35 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+const baseUrl = "http://localhost:5173";
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+test("フォームに入力がなかった場合、エラーを表示する。", async ({ page }) => {
+  await page.goto(baseUrl);
+
+  // ログインボタンを押す
+  await page.getByRole("button", { name: "ログイン" }).click();
+
+  // エラー文言が表示されることを確認
+  await expect(
+    page.getByText("メールアドレスを入力してください。")
+  ).toBeVisible();
+  await expect(page.getByText("パスワードを入力してください。")).toBeVisible();
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test("フォームに入力があった場合、エラーを表示しない", async ({ page }) => {
+  await page.goto(baseUrl);
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  // フォームに入力
+  await page.getByLabel("メールアドレス").fill("test@xxx.com");
+  await page.getByLabel("パスワード").fill("password");
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+  // ログインボタンを押す
+  await page.getByRole("button", { name: "ログイン" }).click();
+
+  // エラー文言が表示されないことを確認
+  await expect(
+    page.getByText("メールアドレスを入力してください。")
+  ).not.toBeVisible();
+  await expect(
+    page.getByText("パスワードを入力してください。")
+  ).not.toBeVisible();
 });
