@@ -20,6 +20,7 @@ const api = axios.create({
 
 export const Signup = () => {
   const [imageData, setImageData] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -84,6 +85,7 @@ export const Signup = () => {
                 .catch((err) => {
                   // FIXME: エラー文言を表示させる
                   console.error(err);
+                  setErrorMessage(`アイコン画像登録に失敗しました。${err}`);
                 });
             },
             error(err) {
@@ -95,6 +97,7 @@ export const Signup = () => {
       .catch((err) => {
         // FIXME: エラー文言を表示させる
         console.error(err);
+        setErrorMessage(`ユーザー登録に失敗しました。${err}`);
       });
   };
 
@@ -153,6 +156,7 @@ export const Signup = () => {
         </label>
         <img src={imageData} alt="" />
         <button type="submit">登録</button>
+        {errorMessage && <p>{errorMessage}</p>}
       </form>
     </>
   );
