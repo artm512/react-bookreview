@@ -16,6 +16,9 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
+
+    // 入力データをポストする
+    // レスポンスのトークンをローカルストレージに保存して、ログイントップ画面へ遷移
   };
 
   return (
