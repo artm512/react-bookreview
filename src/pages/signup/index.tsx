@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
+import axios, { AxiosResponse } from "axios";
 
 import "./index.css";
 import { useState } from "react";
@@ -9,6 +10,15 @@ type Inputs = {
   password: string;
   icon: FileList;
 };
+
+// FIXME: 共通化してtokenも共通管理できるようにする
+const api = axios.create({
+  baseURL: "https://railway.bookreview.techtrain.dev",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  timeout: 2000,
+});
 
 export const Signup = () => {
   const [imageData, setImageData] = useState("");
@@ -39,9 +49,46 @@ export const Signup = () => {
     console.log(data);
 
     // 入力データをPOSTする
-    // 成功したら、生成された認証用のトークンを設定し、画像を圧縮して別のAPIでアイコン画像をPOSTする
-    // エラーだった場合、エラー文言を表示させる
-    // 全て成功したら、tokenをローカルストレージに保存して、ログイントップに遷移させる
+    await api
+      .post("/users", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      })
+      .then(async (res: AxiosResponse<{ token: string }>) => {
+        // TODO: 成功したら、生成された認証用のトークンを設定
+        console.log("token: ", res.data.token);
+
+        if (data.icon.length > 0) {
+          // TODO: アイコン画像を圧縮。
+
+          // アイコン画像をPOSTする
+          await api
+            .post(
+              "/uploads",
+              {
+                iconUrl: imageData,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${res?.data?.token}`,
+                },
+              }
+            )
+            .then(() => {
+              // TODO: tokenをローカルストレージに保存
+              // TODO: ログイントップに遷移させる
+            })
+            .catch((err) => {
+              // FIXME: エラー文言を表示させる
+              console.error(err);
+            });
+        }
+      })
+      .catch((err) => {
+        // FIXME: エラー文言を表示させる
+        console.error(err);
+      });
   };
 
   return (
