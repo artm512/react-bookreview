@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios, { AxiosResponse } from "axios";
+import Compressor from "compressorjs";
 
 import "./index.css";
 import { useState } from "react";
@@ -14,9 +15,6 @@ type Inputs = {
 // FIXME: 共通化してtokenも共通管理できるようにする
 const api = axios.create({
   baseURL: "https://railway.bookreview.techtrain.dev",
-  headers: {
-    "Content-Type": "application/json",
-  },
   timeout: 2000,
 });
 
@@ -60,29 +58,38 @@ export const Signup = () => {
         console.log("token: ", res.data.token);
 
         if (data.icon.length > 0) {
-          // TODO: アイコン画像を圧縮。
+          const file = data.icon?.[0];
+          if (!file) return;
 
-          // アイコン画像をPOSTする
-          await api
-            .post(
-              "/uploads",
-              {
-                iconUrl: imageData,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${res?.data?.token}`,
-                },
-              }
-            )
-            .then(() => {
-              // TODO: tokenをローカルストレージに保存
-              // TODO: ログイントップに遷移させる
-            })
-            .catch((err) => {
-              // FIXME: エラー文言を表示させる
-              console.error(err);
-            });
+          // アイコン画像を圧縮。
+          new Compressor(file, {
+            quality: 0.6,
+            success(result) {
+              const formData = new FormData();
+              formData.append("icon", result);
+              console.log({ result });
+
+              // アイコン画像をPOSTする
+              api
+                .post("/uploads", formData, {
+                  headers: {
+                    Authorization: `Bearer ${res?.data?.token}`,
+                  },
+                })
+                .then(() => {
+                  // TODO: tokenをローカルストレージ or cookie に保存
+                  // TODO: ログイントップに遷移させる
+                  console.log("success!!!");
+                })
+                .catch((err) => {
+                  // FIXME: エラー文言を表示させる
+                  console.error(err);
+                });
+            },
+            error(err) {
+              console.log(err.message);
+            },
+          });
         }
       })
       .catch((err) => {
