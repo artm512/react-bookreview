@@ -7,10 +7,7 @@ export const PublicLayout = () => {
       <header className="bg-white shadow">
         <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 px-8">
           <div className="flex">
-            <Link
-              to="/"
-              className="-m-1.5 p-1.5 font-semibold hover:opacity-70"
-            >
+            <Link to="/" className="font-semibold hover:opacity-70">
               書籍レビューアプリ
             </Link>
           </div>
