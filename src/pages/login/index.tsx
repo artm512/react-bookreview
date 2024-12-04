@@ -1,8 +1,9 @@
-import "./index.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 
 import { api } from "../../utils/api";
+import { InputText } from "../../components/InputText";
+import { HeadingLevel1 } from "../../components/Heading";
 
 type Inputs = {
   email: string;
@@ -38,35 +39,46 @@ export const Login = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
+      <HeadingLevel1 text="ログイン" />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-start gap-8 mt-8"
+      >
+        {errorMessage && <p className="bg-red-200 py-4 px-8">{errorMessage}</p>}
+        <label className="w-6/12">
           メールアドレス
-          <input
+          <InputText
             type="email"
             id="email"
             {...register("email", {
               required: "メールアドレスを入力してください。",
             })}
+            className="mt-2"
           />
+          {errors.email?.message && (
+            <p className="text-red-500 mt-2">{errors.email?.message}</p>
+          )}
         </label>
-        {errors.email?.message && (
-          <p className="errorMessage">{errors.email?.message}</p>
-        )}
-        <label>
+        <label className="w-6/12">
           パスワード
-          <input
+          <InputText
             type="password"
             id="password"
             {...register("password", {
               required: "パスワードを入力してください。",
             })}
+            className="mt-2"
           />
+          {errors.password?.message && (
+            <p className="text-red-500 mt-2">{errors.password?.message}</p>
+          )}
         </label>
-        {errors.password?.message && (
-          <p className="errorMessage">{errors.password?.message}</p>
-        )}
-        <button type="submit">ログイン</button>
-        {errorMessage && <p>{errorMessage}</p>}
+        <button
+          type="submit"
+          className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+        >
+          ログイン
+        </button>
       </form>
     </>
   );
