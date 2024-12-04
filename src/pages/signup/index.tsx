@@ -90,6 +90,7 @@ export const Signup = () => {
             },
             error(err) {
               console.log(err.message);
+              setErrorMessage(`アイコン画像の圧縮に失敗しました。${err}`);
             },
           });
         }
