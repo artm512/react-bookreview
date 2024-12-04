@@ -1,4 +1,4 @@
-import App from "./../App.tsx";
+import { Home } from "../pages/home";
 import { Signup } from "./../pages/signup";
 import { Login } from "./../pages/login";
 import { PublicLayout } from "./../layouts/publicLayout";
@@ -10,7 +10,7 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<PublicLayout />}>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
         </Route>
