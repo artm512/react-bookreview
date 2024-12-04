@@ -1,19 +1,13 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import axios from "axios";
-
 import "./index.css";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+
+import { api } from "../../utils/api";
 
 type Inputs = {
   email: string;
   password: string;
 };
-
-// FIXME: 共通化してtokenも共通管理できるようにする
-const api = axios.create({
-  baseURL: "https://railway.bookreview.techtrain.dev",
-  timeout: 2000,
-});
 
 export const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");

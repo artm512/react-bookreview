@@ -1,9 +1,10 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import axios, { AxiosResponse } from "axios";
-import Compressor from "compressorjs";
-
 import "./index.css";
 import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { AxiosResponse } from "axios";
+import Compressor from "compressorjs";
+
+import { api } from "../../utils/api";
 
 type Inputs = {
   name: string;
@@ -11,12 +12,6 @@ type Inputs = {
   password: string;
   icon: FileList;
 };
-
-// FIXME: 共通化してtokenも共通管理できるようにする
-const api = axios.create({
-  baseURL: "https://railway.bookreview.techtrain.dev",
-  timeout: 2000,
-});
 
 export const Signup = () => {
   const [imageData, setImageData] = useState("");
