@@ -5,7 +5,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ hasError = false, className, type, ...props }, ref) => {
+  ({ hasError = false, className, type = "text", ...props }, ref) => {
     console.log({ hasError }); // TODO: バリデーションスタイル用
 
     const defaultClassName =

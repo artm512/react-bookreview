@@ -5,6 +5,8 @@ import { AxiosResponse } from "axios";
 import Compressor from "compressorjs";
 
 import { api } from "../../utils/api";
+import { InputText } from "../../components/InputText";
+import { HeadingLevel1 } from "../../components/Heading";
 
 type Inputs = {
   name: string;
@@ -99,60 +101,73 @@ export const Signup = () => {
 
   return (
     <>
-      <h2>ユーザー新規登録</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
+      <HeadingLevel1 text="ユーザー新規登録" />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-start gap-8 mt-8"
+      >
+        {errorMessage && <p className="bg-red-200 py-4 px-8">{errorMessage}</p>}
+        <label className="w-6/12">
           氏名
-          <input
-            type="name"
+          <InputText
             id="name"
             {...register("name", {
               required: "氏名を入力してください。",
             })}
+            className="mt-2"
           />
+          {errors.name?.message && (
+            <p className="text-red-500 mt-2">{errors.name?.message}</p>
+          )}
         </label>
-        {errors.name?.message && (
-          <p className="errorMessage">{errors.name?.message}</p>
-        )}
-        <label>
+        <label className="w-6/12">
           メールアドレス
-          <input
+          <InputText
             type="email"
             id="email"
             {...register("email", {
               required: "メールアドレスを入力してください。",
             })}
+            className="mt-2"
           />
+          {errors.email?.message && (
+            <p className="text-red-500 mt-2">{errors.email?.message}</p>
+          )}
         </label>
-        {errors.email?.message && (
-          <p className="errorMessage">{errors.email?.message}</p>
-        )}
-        <label>
+        <label className="w-6/12">
           パスワード
-          <input
+          <InputText
             type="password"
             id="password"
             {...register("password", {
               required: "パスワードを入力してください。",
             })}
+            className="mt-2"
           />
+          {errors.password?.message && (
+            <p className="text-red-500 mt-2">{errors.password?.message}</p>
+          )}
         </label>
-        {errors.password?.message && (
-          <p className="errorMessage">{errors.password?.message}</p>
-        )}
-        <label>
-          アイコン画像
-          <input
-            type="file"
-            id="icon"
-            accept="image/*"
-            {...register("icon")}
-            onChange={handleChangeIcon}
-          />
-        </label>
-        <img src={imageData} alt="" />
-        <button type="submit">登録</button>
-        {errorMessage && <p>{errorMessage}</p>}
+        <div className="w-8/12">
+          <label className="flex flex-col">
+            <span>アイコン画像</span>
+            <input
+              type="file"
+              id="icon"
+              accept="image/*"
+              {...register("icon")}
+              onChange={handleChangeIcon}
+              className="mt-2"
+            />
+          </label>
+          <img src={imageData} alt="" />
+        </div>
+        <button
+          type="submit"
+          className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+        >
+          登録
+        </button>
       </form>
     </>
   );
