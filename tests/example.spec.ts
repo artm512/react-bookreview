@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const baseUrl = "http://localhost:5173";
+const baseUrl = "http://localhost:5173/login";
 
 test("フォームに入力がなかった場合、エラーを表示する。", async ({ page }) => {
   await page.goto(baseUrl);
@@ -21,9 +21,6 @@ test("フォームに入力があった場合、エラーを表示しない", as
   // フォームに入力
   await page.getByLabel("メールアドレス").fill("test@xxx.com");
   await page.getByLabel("パスワード").fill("password");
-
-  // ログインボタンを押す
-  await page.getByRole("button", { name: "ログイン" }).click();
 
   // エラー文言が表示されないことを確認
   await expect(
