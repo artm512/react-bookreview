@@ -1,6 +1,6 @@
 import "./index.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AxiosResponse } from "axios";
 import Compressor from "compressorjs";
@@ -19,7 +19,7 @@ type Inputs = {
 };
 
 export const Signup = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const [imageData, setImageData] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -112,6 +112,8 @@ export const Signup = () => {
         setErrorMessage(`ユーザー登録に失敗しました。${err}`);
       });
   };
+
+  if (auth) return <Navigate replace to="/" />;
 
   return (
     <>
