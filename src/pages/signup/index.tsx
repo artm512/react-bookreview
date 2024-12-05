@@ -1,12 +1,15 @@
 import "./index.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AxiosResponse } from "axios";
 import Compressor from "compressorjs";
+import { useCookies } from "react-cookie";
 
 import { api } from "../../utils/api";
 import { InputText } from "../../components/InputText";
 import { HeadingLevel1 } from "../../components/Heading";
+import { useAuth } from "../../providers/AuthProvider";
 
 type Inputs = {
   name: string;
@@ -16,8 +19,12 @@ type Inputs = {
 };
 
 export const Signup = () => {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const [imageData, setImageData] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [cookies, setCookie, removeCookie] = useCookies();
   const {
     register,
     handleSubmit,
@@ -52,12 +59,16 @@ export const Signup = () => {
         password: data.password,
       })
       .then(async (res: AxiosResponse<{ token: string }>) => {
-        // TODO: 成功したら、生成された認証用のトークンを設定
         console.log("token: ", res.data.token);
+        setCookie("token", res.data.token);
+        setAuth(true);
 
         if (data.icon.length > 0) {
           const file = data.icon?.[0];
-          if (!file) return;
+          if (!file) {
+            navigate("/");
+            return;
+          }
 
           // アイコン画像を圧縮。
           new Compressor(file, {
@@ -71,13 +82,14 @@ export const Signup = () => {
               api
                 .post("/uploads", formData, {
                   headers: {
-                    Authorization: `Bearer ${res?.data?.token}`,
+                    Authorization: `Bearer ${cookies.token}`,
                   },
                 })
                 .then(() => {
                   // TODO: tokenをローカルストレージ or cookie に保存
                   // TODO: ログイントップに遷移させる
                   console.log("success!!!");
+                  navigate("/");
                 })
                 .catch((err) => {
                   // FIXME: エラー文言を表示させる
@@ -90,6 +102,8 @@ export const Signup = () => {
               setErrorMessage(`アイコン画像の圧縮に失敗しました。${err}`);
             },
           });
+        } else {
+          navigate("/");
         }
       })
       .catch((err) => {

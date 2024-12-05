@@ -1,8 +1,15 @@
+import { Navigate } from "react-router-dom";
 import { Link } from "../../components/Link";
 import { HeadingLevel1 } from "../../components/Heading";
+import { useAuth } from "../../providers/AuthProvider";
 
 export const Home = () => {
-  // TODO: ログイン後のみ見れるようにする。ログイン前はログインページへリダイレクト。
+  const { auth } = useAuth();
+  console.log({ auth });
+
+  // FIXME: ログイン判定リダイレクトを共通化したい
+  if (!auth) return <Navigate replace to="/login" />;
+
   return (
     <>
       <HeadingLevel1 text="書籍レビュー一覧" />

@@ -1,9 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate, Navigate } from "react-router-dom";
 
 import { api } from "../../utils/api";
 import { InputText } from "../../components/InputText";
 import { HeadingLevel1 } from "../../components/Heading";
+import { useAuth } from "../../providers/AuthProvider";
 
 type Inputs = {
   email: string;
@@ -11,7 +14,12 @@ type Inputs = {
 };
 
 export const Login = () => {
+  const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
+
   const [errorMessage, setErrorMessage] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [cookies, setCookie, removeCookie] = useCookies();
   const {
     register,
     handleSubmit,
@@ -28,14 +36,18 @@ export const Login = () => {
         password: data.password,
       })
       .then((res) => {
-        // TODO: レスポンスのトークンをローカルストレージ or cookieに保存して、ログイントップ画面へ遷移
         console.log("login success!!! ", res.data.token);
+        setCookie("token", res.data.token);
+        setAuth(true);
+        navigate("/");
       })
       .catch((err) => {
         console.error(err);
         setErrorMessage(`ログインに失敗しました。${err}`);
       });
   };
+
+  if (auth) return <Navigate replace to="/" />;
 
   return (
     <>
