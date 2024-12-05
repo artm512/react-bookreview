@@ -11,10 +11,16 @@ export const PublicLayout = () => {
               書籍レビューアプリ
             </Link>
           </div>
-          <div className="flex flex-1 justify-end">
+          <div className="flex flex-1 gap-6 justify-end">
+            <Link
+              to="/signup"
+              className="text-sm/6 text-gray-900 hover:opacity-70"
+            >
+              ユーザー登録
+            </Link>
             <Link
               to="/login"
-              className="text-sm/6 font-semibold text-gray-900 hover:opacity-70"
+              className="text-sm/6 text-gray-900 hover:opacity-70"
             >
               ログイン
             </Link>
