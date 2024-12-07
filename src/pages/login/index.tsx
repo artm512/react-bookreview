@@ -7,6 +7,7 @@ import { api } from "../../utils/api";
 import { InputText } from "../../components/InputText";
 import { HeadingLevel1 } from "../../components/Heading";
 import { useAuth } from "../../providers/AuthProvider";
+import { ButtonPrimary } from "../../components/Button";
 
 type Inputs = {
   email: string;
@@ -85,12 +86,7 @@ export const Login = () => {
             <p className="text-red-500 mt-2">{errors.password?.message}</p>
           )}
         </label>
-        <button
-          type="submit"
-          className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-        >
-          ログイン
-        </button>
+        <ButtonPrimary type="submit">ログイン</ButtonPrimary>
       </form>
     </>
   );

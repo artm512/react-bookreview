@@ -10,6 +10,7 @@ import { api } from "../../utils/api";
 import { InputText } from "../../components/InputText";
 import { HeadingLevel1 } from "../../components/Heading";
 import { useAuth } from "../../providers/AuthProvider";
+import { ButtonPrimary } from "../../components/Button";
 
 type Inputs = {
   name: string;
@@ -178,12 +179,7 @@ export const Signup = () => {
           </label>
           <img src={imageData} alt="" />
         </div>
-        <button
-          type="submit"
-          className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-        >
-          登録
-        </button>
+        <ButtonPrimary type="submit">登録</ButtonPrimary>
       </form>
     </>
   );
