@@ -5,6 +5,7 @@ import { Link } from "../../components/Link";
 import { HeadingLevel1 } from "../../components/Heading";
 import { useAuth } from "../../providers/AuthProvider";
 import { api } from "../../utils/api";
+import { Pagination } from "../../components/Pagination";
 
 type bookReview = {
   id: string;
@@ -17,9 +18,11 @@ type bookReview = {
 };
 
 export const Home = () => {
+  const ONE_PAGE_DISPLAY_REVIEW = 10;
   const { auth } = useAuth();
   const [cookies] = useCookies();
   const [bookReviews, setBookReviews] = useState<bookReview[]>([]);
+  const [booksOffset, setBooksOffset] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -27,7 +30,7 @@ export const Home = () => {
       api
         .get("/books", {
           params: {
-            offset: "0",
+            offset: `${booksOffset}`,
           },
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -40,7 +43,7 @@ export const Home = () => {
           setErrorMessage(`リストの取得に失敗しました。${err}`);
         });
     }
-  }, [auth]);
+  }, [auth, booksOffset]);
 
   // FIXME: ログイン判定リダイレクトを共通化したい
   if (!auth) return <Navigate replace to="/login" />;
@@ -71,6 +74,13 @@ export const Home = () => {
           </li>
         ))}
       </ul>
+      <div className="mt-8">
+        <Pagination
+          setOffset={setBooksOffset}
+          offset={booksOffset}
+          pageDisplayNum={ONE_PAGE_DISPLAY_REVIEW}
+        />
+      </div>
     </>
   );
 };
