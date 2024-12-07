@@ -3,6 +3,7 @@ import { Signup } from "./../pages/signup";
 import { Login } from "./../pages/login";
 import { Profile } from "./../pages/profile";
 import { New } from "./../pages/new";
+import { Detail } from "./../pages/detail";
 import { PublicLayout } from "./../layouts/publicLayout";
 import { ProtectedLayout } from "./../layouts/protectedLayout";
 
@@ -20,6 +21,7 @@ export const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/new" element={<New />} />
+          <Route path="/detail/:id" element={<Detail />} />
         </Route>
       </Routes>
     </BrowserRouter>
