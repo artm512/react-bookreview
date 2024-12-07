@@ -2,6 +2,7 @@ import { Home } from "../pages/home";
 import { Signup } from "./../pages/signup";
 import { Login } from "./../pages/login";
 import { Profile } from "./../pages/profile";
+import { New } from "./../pages/new";
 import { PublicLayout } from "./../layouts/publicLayout";
 import { ProtectedLayout } from "./../layouts/protectedLayout";
 
@@ -18,6 +19,7 @@ export const Router = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/new" element={<New />} />
         </Route>
       </Routes>
     </BrowserRouter>

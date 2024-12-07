@@ -9,7 +9,7 @@ const gnavLinks = [
     label: "ユーザー情報編集",
   },
   {
-    to: "/",
+    to: "/new",
     label: "レビュー投稿",
   },
 ];
