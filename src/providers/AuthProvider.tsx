@@ -18,6 +18,7 @@ type ContextType = {
   auth: boolean | undefined;
   userInfo: UserInfoType;
   setAuth: Dispatch<boolean>;
+  fetchUserInfo: () => void;
 };
 
 export const AuthContext = createContext({} as ContextType);
@@ -32,6 +33,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     iconUrl: undefined,
   });
 
+  const fetchUserInfo = () => {
+    api
+      .get("/users", {
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      })
+      .then((res) => {
+        setUserInfo(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   useEffect(() => {
     if (cookies.token) {
       setAuth(true);
@@ -40,23 +56,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (auth) {
-      api
-        .get("/users", {
-          headers: {
-            Authorization: `Bearer ${cookies.token}`,
-          },
-        })
-        .then((res) => {
-          setUserInfo(res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      fetchUserInfo();
     }
   }, [auth]);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, userInfo }}>
+    <AuthContext.Provider value={{ auth, setAuth, userInfo, fetchUserInfo }}>
       {children}
     </AuthContext.Provider>
   );

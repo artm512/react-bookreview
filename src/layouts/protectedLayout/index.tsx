@@ -4,7 +4,7 @@ import { useAuth } from "../../providers/AuthProvider";
 
 const gnavLinks = [
   {
-    to: "/",
+    to: "/profile",
     label: "ユーザー情報編集",
   },
   {
