@@ -4,6 +4,7 @@ import { Login } from "./../pages/login";
 import { Profile } from "./../pages/profile";
 import { New } from "./../pages/new";
 import { Detail } from "./../pages/detail";
+import { Edit } from "./../pages/edit";
 import { PublicLayout } from "./../layouts/publicLayout";
 import { ProtectedLayout } from "./../layouts/protectedLayout";
 
@@ -22,6 +23,7 @@ export const Router = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/new" element={<New />} />
           <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/edit/:id" element={<Edit />} />
         </Route>
       </Routes>
     </BrowserRouter>

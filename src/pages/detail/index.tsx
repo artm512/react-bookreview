@@ -9,7 +9,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import { ButtonPrimary } from "../../components/Button";
 import { Loading } from "../../components/Loading";
 
-type ReviewInfo = {
+export type ReviewInfo = {
   id: string;
   title: string;
   url: string;
@@ -29,7 +29,7 @@ export const Detail = () => {
   const [reviewInfo, setReviewInfo] = useState<ReviewInfo>();
 
   const handleClickEdit = () => {
-    navigate("/edit");
+    navigate(`/edit/${id}`);
   };
 
   useEffect(() => {
