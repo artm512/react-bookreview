@@ -8,7 +8,7 @@ import { InputText } from "../../components/InputText";
 import { InputTextarea } from "../../components/InputTextarea";
 import { HeadingLevel1 } from "../../components/Heading";
 import { useAuth } from "../../providers/AuthProvider";
-import { ButtonPrimary } from "../../components/Button";
+import { ButtonPrimary, ButtonError } from "../../components/Button";
 import { Loading } from "../../components/Loading";
 import type { ReviewInfo } from "../detail";
 
@@ -33,6 +33,26 @@ export const Edit = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const handleClickDelete = () => {
+    const checkDelete = window.confirm("投稿を削除してもよろしいですか？");
+    if (!checkDelete) return;
+
+    api
+      .delete(`/books/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      })
+      .then(() => {
+        navigate(`/`);
+      })
+      .catch((err) => {
+        // FIXME: エラー文言を表示させる
+        console.error(err);
+        setErrorMessage(`レビューの削除に失敗しました。${err}`);
+      });
+  };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
@@ -146,7 +166,12 @@ export const Edit = () => {
                 <p className="text-red-500 mt-2">{errors.review?.message}</p>
               )}
             </label>
-            <ButtonPrimary type="submit">編集</ButtonPrimary>
+            <div className="flex gap-2">
+              <ButtonPrimary type="submit">編集</ButtonPrimary>
+              <ButtonError type="button" onClick={handleClickDelete}>
+                削除
+              </ButtonError>
+            </div>
           </form>
         </>
       ) : (
