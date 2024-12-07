@@ -14,7 +14,7 @@ const gnavLinks = [
 ];
 
 export const ProtectedLayout = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, userInfo } = useAuth();
   const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -35,7 +35,10 @@ export const ProtectedLayout = () => {
               書籍レビューアプリ
             </Link>
           </div>
-          <div className="flex flex-1 gap-6 justify-end">
+          <div className="flex flex-1 gap-6 justify-end items-center">
+            <span className="text-sm/6 bg-sky-700 text-white px-4 py-0.5">
+              ユーザー名：{userInfo.name}
+            </span>
             {gnavLinks.map((link) => (
               <Link
                 key={link.label}

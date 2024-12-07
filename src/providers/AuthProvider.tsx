@@ -7,8 +7,16 @@ import {
 } from "react";
 import { useCookies } from "react-cookie";
 
+import { api } from "../utils/api";
+
+type UserInfoType = {
+  name: string;
+  iconUrl: string | undefined;
+};
+
 type ContextType = {
   auth: boolean | undefined;
+  userInfo: UserInfoType;
   setAuth: Dispatch<boolean>;
 };
 
@@ -19,14 +27,36 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies();
   const [auth, setAuth] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfoType>({
+    name: "",
+    iconUrl: undefined,
+  });
 
   useEffect(() => {
-    // TODO: cookieにtokenがあるかでログイン状態を判定し、存在していればauthにtrueを入れる
-    if (cookies.token) setAuth(true);
+    if (cookies.token) {
+      setAuth(true);
+    }
   }, []);
 
+  useEffect(() => {
+    if (auth) {
+      api
+        .get("/users", {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        })
+        .then((res) => {
+          setUserInfo(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [auth]);
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, userInfo }}>
       {children}
     </AuthContext.Provider>
   );
